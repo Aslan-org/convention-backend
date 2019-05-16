@@ -29,8 +29,8 @@ public class PostArticleHandler implements Handler<RoutingContext> {
             routingContext.request()
                         .absoluteURI());
 
-        JsonObject user = routingContext.getBodyAsJson();
-        Future<JsonObject> future = mongoDAO.save(Collections.Article, user);
+        JsonObject article = routingContext.getBodyAsJson();
+        Future<JsonObject> future = mongoDAO.save(Collections.Article, article);
 
         JsonObject response = new JsonObject();
         routingContext.response()

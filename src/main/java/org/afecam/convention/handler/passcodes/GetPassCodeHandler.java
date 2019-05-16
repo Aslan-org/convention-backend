@@ -1,4 +1,4 @@
-package org.afecam.convention.handler.users;
+package org.afecam.convention.handler.passcodes;
 
 import io.vertx.core.Future;
 import io.vertx.core.Handler;

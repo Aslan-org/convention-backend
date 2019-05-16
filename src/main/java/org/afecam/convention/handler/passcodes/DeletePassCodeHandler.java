@@ -32,32 +32,25 @@ public class DeletePassCodeHandler implements Handler<RoutingContext> {
         String _id = routingContext.request().getParam("id");
         JsonObject query = new JsonObject().put("_id", _id);
 
-        JsonObject replaceJson = new JsonObject();
 
         JsonObject response = new JsonObject();
         routingContext.response()
                 .putHeader(HttpHeaders.CONTENT_TYPE, MediaTypes.APPLICATION_JSON);
 
 
-        Future<JsonObject> replaceFuture = mongoDAO.retrieveOne(Collections.PassCode, query);
-        replaceFuture.setHandler(replaceResult -> {
-            replaceJson.mergeIn(replaceFuture.result());
-            replaceJson.put("status", "inactive"); //active, inactive
+        Future<JsonObject> future = mongoDAO.delete(Collections.PassCode, query);
 
-            Future<JsonObject> future = mongoDAO.update(Collections.PassCode, query, replaceJson);
+        future.setHandler(result -> {
+            if (future.succeeded()) {
+                response.put("success", Collections.PassCode + " Deleted");
+                response.put("data", future.result());
+                routingContext.response().setStatusCode(HttpURLConnection.HTTP_NO_CONTENT);
+            } else {
+                response.put("error", Collections.PassCode + " Not Deleted");
+                routingContext.response().setStatusCode(HttpURLConnection.HTTP_NOT_FOUND);
+            }
 
-            future.setHandler(result -> {
-                if (future.succeeded()) {
-                    response.put("success", Collections.PassCode + " Deleted");
-                    response.put("data", future.result());
-                    routingContext.response().setStatusCode(HttpURLConnection.HTTP_NO_CONTENT);
-                } else {
-                    response.put("error", Collections.PassCode + " Not Deleted");
-                    routingContext.response().setStatusCode(HttpURLConnection.HTTP_NOT_FOUND);
-                }
-
-                routingContext.response().end(response.encode());
-            });
+            routingContext.response().end(response.encode());
         });
     }
 }
