@@ -15,9 +15,16 @@ import io.vertx.ext.web.handler.CorsHandler;
 import org.afecam.convention.data.Collections;
 import org.afecam.convention.handler.HealthCheckHandler;
 import org.afecam.convention.handler.ResourceNotFoundHandler;
+import org.afecam.convention.handler.articles.*;
 import org.afecam.convention.handler.messages.*;
 import org.afecam.convention.handler.notifications.*;
+import org.afecam.convention.handler.participants.*;
+import org.afecam.convention.handler.passcodes.DeletePassCodeHandler;
+import org.afecam.convention.handler.passcodes.GetPassCodesHandler;
+import org.afecam.convention.handler.passcodes.PostPassCodeHandler;
+import org.afecam.convention.handler.passcodes.PutPassCodeHandler;
 import org.afecam.convention.handler.users.*;
+import org.afecam.convention.handler.users.GetPassCodeHandler;
 
 public class MainVerticle extends AbstractVerticle {
 
@@ -65,6 +72,15 @@ public class MainVerticle extends AbstractVerticle {
 
         // messages endpoint
         router.mountSubRouter("/messages", messagesRoutes());
+
+        // messages endpoint
+        router.mountSubRouter("/blog", blogRoutes());
+
+        // messages endpoint
+        router.mountSubRouter("/participants", participantsRoutes());
+
+        // messages endpoint
+        router.mountSubRouter("/passcodes", passCodesRoutes());
 
         // users endpoint
         router.mountSubRouter("/users", usersRoutes());
@@ -137,6 +153,57 @@ public class MainVerticle extends AbstractVerticle {
         router.put("/:id").handler(new PutUserHandler(dbClient));
         //delete
         router.delete("/:id").handler(new DeleteUserHandler(dbClient));
+
+        return router;
+    }
+
+    private Router blogRoutes() {
+        LOGGER.debug("Mounting '/articles' endpoint");
+
+        Router router = Router.router(vertx);
+        //Get
+        router.get("/article").handler(new GetArticlesHandler(dbClient));
+        router.get("/article/:id").handler(new GetArticleHandler(dbClient));
+        //post
+        router.post("/article").handler(new PostArticleHandler(dbClient));
+        //put
+        router.put("/article/:id").handler(new PutArticleHandler(dbClient));
+        //delete
+        router.delete("/article/:id").handler(new DeleteArticleHandler(dbClient));
+
+        return router;
+    }
+
+    private Router participantsRoutes() {
+        LOGGER.debug("Mounting '/participants' endpoint");
+
+        Router router = Router.router(vertx);
+        //Get
+        router.get("/").handler(new GetParticipantsHandler(dbClient));
+        router.get("/:id").handler(new GetParticipantHandler(dbClient));
+        //post
+        router.post("/").handler(new PostParticipantHandler(dbClient));
+        //put
+        router.put("/:id").handler(new PutParticipantHandler(dbClient));
+        //delete
+        router.delete("/:id").handler(new DeleteParticipantHandler(dbClient));
+
+        return router;
+    }
+
+    private Router passCodesRoutes() {
+        LOGGER.debug("Mounting '/passCode' endpoint");
+
+        Router router = Router.router(vertx);
+        //Get
+        router.get("/").handler(new GetPassCodesHandler(dbClient));
+        router.get("/:id").handler(new GetPassCodeHandler(dbClient));
+        //post
+        router.post("/").handler(new PostPassCodeHandler(dbClient));
+        //put
+        router.put("/:id").handler(new PutPassCodeHandler(dbClient));
+        //delete
+        router.delete("/:id").handler(new DeletePassCodeHandler(dbClient));
 
         return router;
     }
