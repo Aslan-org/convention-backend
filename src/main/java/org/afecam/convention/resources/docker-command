@@ -1,0 +1,1 @@
+docker run -d --name convention -e MONGO_INITDB_ROOT_USERNAME=convention-user -e MONGO_INITDB_ROOT_PASSWORD=convetion-password  mongo
