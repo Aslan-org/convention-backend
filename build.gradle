@@ -59,3 +59,11 @@ test {
 run {
   args = ['run', mainVerticleName, "--redeploy=$watchForChange", "--launcher-class=$mainClassName", "--on-redeploy=$doOnChange"]
 }
+
+sourceSets {
+  main {
+    resources {
+      srcDirs "src/main/java/org/afecam/convention/resources"
+    }
+  }
+}
