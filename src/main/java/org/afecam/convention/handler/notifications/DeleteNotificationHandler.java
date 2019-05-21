@@ -9,7 +9,7 @@ import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.RoutingContext;
 import org.afecam.convention.dao.MongoDAO;
-import org.afecam.convention.data.Collections;
+import org.afecam.convention.dto.Collections;
 import org.afecam.convention.responses.MediaTypes;
 
 import java.net.HttpURLConnection;
@@ -48,7 +48,7 @@ public class DeleteNotificationHandler implements Handler<RoutingContext> {
         future.setHandler(result -> {
           if (future.succeeded()) {
             response.put("success", Collections.Notification + " Deleted");
-            response.put("data", future.result());
+            response.put("dto", future.result());
             routingContext.response().setStatusCode(HttpURLConnection.HTTP_NO_CONTENT);
           } else {
             response.put("error", Collections.Notification + " Not Deleted");

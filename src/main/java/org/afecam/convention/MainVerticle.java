@@ -19,7 +19,7 @@ import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CorsHandler;
 import org.afecam.convention.handler.passcodes.*;
 import org.afecam.convention.services.LoginService;
-import org.afecam.convention.data.Collections;
+import org.afecam.convention.dto.Collections;
 import org.afecam.convention.handler.HealthCheckHandler;
 import org.afecam.convention.handler.ResourceNotFoundHandler;
 import org.afecam.convention.handler.articles.*;
