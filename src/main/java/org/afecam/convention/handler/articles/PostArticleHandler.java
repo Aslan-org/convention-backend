@@ -40,7 +40,7 @@ public class PostArticleHandler implements Handler<RoutingContext> {
 
             if (future.succeeded()) {
                 response.put("success", Collections.Article + " Saved");
-                response.put("dto", future.result());
+                response.put("data", future.result());
                 routingContext.response().setStatusCode(HttpURLConnection.HTTP_CREATED);
             } else {
                 response.put("error", Collections.Article + " Not Saved");

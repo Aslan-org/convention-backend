@@ -42,7 +42,7 @@ public class PutArticleHandler implements Handler<RoutingContext> {
         future.setHandler(result -> {
             if (future.succeeded()) {
                 response.put("success", Collections.Article + " Updated");
-                response.put("dto", future.result());
+                response.put("data", future.result());
                 routingContext.response().setStatusCode(HttpURLConnection.HTTP_ACCEPTED);
             } else {
                 response.put("error", Collections.Article + " Not Updated");

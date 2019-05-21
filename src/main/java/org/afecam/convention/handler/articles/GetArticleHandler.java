@@ -41,7 +41,7 @@ public class GetArticleHandler implements Handler<RoutingContext> {
         future.setHandler(result -> {
             if(future.succeeded()){
                 response.put("success", Collections.Article + " Retrieved");
-                response.put("dto", future.result());
+                response.put("data", future.result());
                 routingContext.response().setStatusCode(HttpURLConnection.HTTP_OK);
             }else {
                 response.put("error", Collections.Article + " Not Found");

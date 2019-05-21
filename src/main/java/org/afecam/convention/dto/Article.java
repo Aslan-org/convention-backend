@@ -20,4 +20,6 @@ public class Article {
     private @NonNull String status; //published, draft, archived
     private @NonNull String language;
     private Long viewCount;
+
+
 }

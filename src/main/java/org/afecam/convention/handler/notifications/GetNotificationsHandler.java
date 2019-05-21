@@ -3,6 +3,7 @@ package org.afecam.convention.handler.notifications;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpHeaders;
+import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
@@ -30,7 +31,12 @@ public class GetNotificationsHandler implements Handler<RoutingContext> {
           .absoluteURI());
   
  
-      JsonObject query = routingContext.getBodyAsJson();
+      JsonObject query;
+        try {
+            query  = routingContext.getBodyAsJson();
+        } catch (DecodeException ex){
+            query = new JsonObject();
+        }
       Future<JsonArray> future = mongoDAO.search(Collections.Notification, query);
   
       JsonObject response = new JsonObject();

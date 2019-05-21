@@ -3,6 +3,7 @@ package org.afecam.convention.handler.articles;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpHeaders;
+import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
@@ -29,7 +30,14 @@ public class GetArticlesHandler implements Handler<RoutingContext> {
                 routingContext.request()
                         .absoluteURI());
 
-        JsonObject query = routingContext.getBodyAsJson();
+        JsonObject query;
+
+        try {
+            query  = routingContext.getBodyAsJson();
+        } catch (DecodeException ex){
+            query = new JsonObject();
+        }
+
         Future<JsonArray> future = mongoDAO.search(Collections.Article, query);
 
         JsonObject response = new JsonObject();
@@ -39,7 +47,7 @@ public class GetArticlesHandler implements Handler<RoutingContext> {
         future.setHandler(result -> {
             if(future.succeeded()){
                 response.put("success", Collections.Article + "s Retrieved");
-                response.put("dto", future.result());
+                response.put("data", future.result());
                 routingContext.response().setStatusCode(HttpURLConnection.HTTP_OK);
             }else{
                 response.put("error", Collections.Article + "s Not Found");

@@ -10,6 +10,7 @@ import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.RoutingContext;
 import org.afecam.convention.dao.MongoDAO;
 import org.afecam.convention.dto.Collections;
+import org.afecam.convention.dto.Message;
 import org.afecam.convention.responses.MediaTypes;
 
 import java.net.HttpURLConnection;
@@ -29,6 +30,7 @@ public class PostMessageHandler implements Handler<RoutingContext> {
         .absoluteURI());
 
     JsonObject message = routingContext.getBodyAsJson();
+
     Future<JsonObject> future = mongoDAO.save(Collections.Message, message);
 
     JsonObject response = new JsonObject();
