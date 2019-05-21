@@ -19,7 +19,7 @@ import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CorsHandler;
 import org.afecam.convention.handler.passcodes.*;
 import org.afecam.convention.services.LoginService;
-import org.afecam.convention.data.Collections;
+import org.afecam.convention.dto.Collections;
 import org.afecam.convention.handler.HealthCheckHandler;
 import org.afecam.convention.handler.ResourceNotFoundHandler;
 import org.afecam.convention.handler.articles.*;
@@ -182,14 +182,14 @@ public class MainVerticle extends AbstractVerticle {
 
         Router router = Router.router(vertx);
         //Get
-        router.get("/article").handler(new GetArticlesHandler(dbClient));
-        router.get("/article/:id").handler(new GetArticleHandler(dbClient));
+        router.get("/articles").handler(new GetArticlesHandler(dbClient));
+        router.get("/articles/:id").handler(new GetArticleHandler(dbClient));
         //post
-        router.post("/article").handler(new PostArticleHandler(dbClient));
+        router.post("/articles").handler(new PostArticleHandler(dbClient));
         //put
-        router.put("/article/:id").handler(new PutArticleHandler(dbClient));
+        router.put("/articles/:id").handler(new PutArticleHandler(dbClient));
         //delete
-        router.delete("/article/:id").handler(new DeleteArticleHandler(dbClient));
+        router.delete("/articles/:id").handler(new DeleteArticleHandler(dbClient));
 
         return router;
     }

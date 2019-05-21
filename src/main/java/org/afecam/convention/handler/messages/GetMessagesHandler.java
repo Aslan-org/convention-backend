@@ -3,6 +3,7 @@ package org.afecam.convention.handler.messages;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpHeaders;
+import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
@@ -10,7 +11,7 @@ import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.RoutingContext;
 import org.afecam.convention.dao.MongoDAO;
-import org.afecam.convention.data.Collections;
+import org.afecam.convention.dto.Collections;
 import org.afecam.convention.responses.MediaTypes;
 
 import java.net.HttpURLConnection;
@@ -29,7 +30,13 @@ public class GetMessagesHandler implements Handler<RoutingContext> {
                 routingContext.request()
                         .absoluteURI());
 
-        JsonObject query = routingContext.getBodyAsJson();
+        JsonObject query;
+
+        try {
+            query  = routingContext.getBodyAsJson();
+        } catch (DecodeException ex){
+            query = new JsonObject();
+        }
         Future<JsonArray> future = mongoDAO.search(Collections.Message, query);
 
         JsonObject response = new JsonObject();
@@ -39,7 +46,7 @@ public class GetMessagesHandler implements Handler<RoutingContext> {
         future.setHandler(result -> {
             if(future.succeeded()){
                 response.put("success", Collections.Message + "s Retrieved");
-                response.put("data", future.result());
+                response.put("dto", future.result());
                 routingContext.response().setStatusCode(HttpURLConnection.HTTP_OK);
             }else{
                 response.put("error", Collections.Message + "s Not Retrieved");

@@ -11,7 +11,7 @@ import io.vertx.ext.jwt.JWTOptions;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.RoutingContext;
 import org.afecam.convention.dao.MongoDAO;
-import org.afecam.convention.data.Collections;
+import org.afecam.convention.dto.Collections;
 import org.afecam.convention.responses.MediaTypes;
 
 import java.net.HttpURLConnection;

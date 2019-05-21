@@ -4,7 +4,7 @@ import io.vertx.core.Future;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
-import org.afecam.convention.data.Collections;
+import org.afecam.convention.dto.Collections;
 
 public class MongoDAO {
 

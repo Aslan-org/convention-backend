@@ -9,7 +9,8 @@ import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.RoutingContext;
 import org.afecam.convention.dao.MongoDAO;
-import org.afecam.convention.data.Collections;
+import org.afecam.convention.dto.Collections;
+import org.afecam.convention.dto.Message;
 import org.afecam.convention.responses.MediaTypes;
 
 import java.net.HttpURLConnection;
@@ -29,6 +30,7 @@ public class PostMessageHandler implements Handler<RoutingContext> {
         .absoluteURI());
 
     JsonObject message = routingContext.getBodyAsJson();
+
     Future<JsonObject> future = mongoDAO.save(Collections.Message, message);
 
     JsonObject response = new JsonObject();
@@ -39,7 +41,7 @@ public class PostMessageHandler implements Handler<RoutingContext> {
 
       if (future.succeeded()) {
         response.put("success", Collections.Message + " Saved");
-        response.put("data", future.result());
+        response.put("dto", future.result());
         routingContext.response().setStatusCode(HttpURLConnection.HTTP_CREATED);
       } else {
         response.put("error", Collections.Message + " Not Saved");
