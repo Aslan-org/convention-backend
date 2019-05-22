@@ -15,6 +15,7 @@ public class Notification {
     private String id;
     private @NonNull String[] userId;
     private @NonNull String type;// email, sms, push
+    private @NonNull String title;// email, sms, push
     private @NonNull String body;
     private @NonNull Date date;
     private String senderEmail;

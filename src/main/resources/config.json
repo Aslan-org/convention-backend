@@ -1,0 +1,13 @@
+{
+  "app-port": 8888,
+
+  "ses-host": "email-smtp.eu-west-1.amazonaws.com",
+  "ses-port": 25,
+  "ses-username": "AKIAJEB3CNERMDRGN53Q",
+  "ses-password": "ArNYfqHYhDg8vyG/hh90lKsZGgc+GFbpTu9UQf4qp8ri",
+  "ses-from_email": "noreply@afgrey.com",
+  "ses-settings-smtpAuth" : true,
+  "ses-settings-smtpStartTLSEnable": true,
+  "ses-settings-smtpStartTLSRequired": true,
+  "ses-settings-transportProtocol": "smtps"
+}

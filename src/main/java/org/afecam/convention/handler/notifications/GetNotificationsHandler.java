@@ -46,7 +46,7 @@ public class GetNotificationsHandler implements Handler<RoutingContext> {
       future.setHandler(result -> {
         if(future.succeeded()){
           response.put("success", Collections.Notification + "s Retrieved");
-          response.put("dto", future.result());
+          response.put("data", future.result());
           routingContext.response().setStatusCode(HttpURLConnection.HTTP_OK);
         }else{
           response.put("error", Collections.Notification + "s Not Retrieved");
