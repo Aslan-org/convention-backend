@@ -49,7 +49,7 @@ public class DeleteUserHandler implements Handler<RoutingContext> {
             future.setHandler(result -> {
                 if (future.succeeded()) {
                     response.put("success", Collections.User + " Deleted");
-                    response.put("dto", future.result());
+                    response.put("data", future.result());
                     routingContext.response().setStatusCode(HttpURLConnection.HTTP_NO_CONTENT);
                 } else {
                     response.put("error", Collections.User + " Not Deleted");

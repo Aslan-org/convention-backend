@@ -13,11 +13,15 @@ import io.vertx.core.net.JksOptions;
 import io.vertx.ext.auth.KeyStoreOptions;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import io.vertx.ext.auth.jwt.JWTAuthOptions;
+import io.vertx.ext.mail.MailClient;
+import io.vertx.ext.mail.MailConfig;
+import io.vertx.ext.mail.StartTLSOptions;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CorsHandler;
 import org.afecam.convention.handler.passcodes.*;
+import org.afecam.convention.services.EmailService;
 import org.afecam.convention.services.LoginService;
 import org.afecam.convention.dto.Collections;
 import org.afecam.convention.handler.HealthCheckHandler;
@@ -28,6 +32,7 @@ import org.afecam.convention.handler.notifications.*;
 import org.afecam.convention.handler.participants.*;
 import org.afecam.convention.handler.users.*;
 import org.afecam.convention.services.ClaimPassCodeService;
+
 
 public class MainVerticle extends AbstractVerticle {
 
@@ -46,6 +51,15 @@ public class MainVerticle extends AbstractVerticle {
 
     private Future<Void> startHttpServer() {
         Future<Void> future = Future.future();
+
+        MailConfig mailConfig = new MailConfig();
+        mailConfig.setHostname("email-smtp.eu-west-1.amazonaws.com");
+        mailConfig.setPort(587);
+        mailConfig.setStarttls(StartTLSOptions.REQUIRED);
+        mailConfig.setUsername("AKIA5YOE6YMLLDMTUUG6");
+        mailConfig.setPassword("BA5g+r2hxIpI1sMK0hSmrZmqcZdjEfqDGAhuGCQfbWT3");
+        MailClient mailClient = MailClient.createNonShared(vertx, mailConfig);
+        EmailService emailService = new EmailService(mailClient, dbClient);
 
         // Create a JWT Auth Provider
         JWTAuthOptions config = new JWTAuthOptions()
@@ -107,6 +121,11 @@ public class MainVerticle extends AbstractVerticle {
         // notifications endpoint
         router.mountSubRouter("/notifications", notificationsRoutes());
 
+        vertx.setPeriodic(60000, id -> {
+            // This handler will get called every minute
+            emailService.sendRoutine();
+        });
+
         server.requestHandler(router::accept)
                 .listen(8888, ar -> {
                     if (ar.succeeded()) {
@@ -166,7 +185,7 @@ public class MainVerticle extends AbstractVerticle {
         //Get
         router.get("/").handler(new GetUsersHandler(dbClient));
         router.get("/:id").handler(new GetUserHandler(dbClient));
-        router.get("/login/:phonenumber").handler(new LoginService(dbClient));
+        router.get("/login").handler(new LoginService(dbClient));
         //post
         router.post("/").handler(new PostUserHandler(dbClient));
         //put
